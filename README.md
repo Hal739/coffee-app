@@ -119,3 +119,9 @@ Note & Timer App for drip coffee
    ```bash
    npm run ios
    ```
+<p>
+  
+<img src="https://github.com/user-attachments/assets/d6e2cd72-52d4-4a3b-988a-21a78d280847" width=33%>
+<img src="https://github.com/user-attachments/assets/d93e808c-3ce6-4016-99f3-8b3016c1f394" width=33%>
+<img src="https://github.com/user-attachments/assets/1360bf81-dc5c-4f5d-bae0-7077bd1369fc" width=33%>
+</p>
