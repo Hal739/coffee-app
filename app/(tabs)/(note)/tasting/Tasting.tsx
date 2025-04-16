@@ -1,107 +1,47 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, SafeAreaView, Alert, TouchableOpacity } from 'react-native';
-import { FlatList } from 'react-native';
+import { StyleSheet, Text, SafeAreaView, Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Link, useRouter } from 'expo-router';
+import ItemList from '@/components/ui/ItemList';
+import { handleDeleteConfirmation } from '@/utils/deleteUtils';
+import AddButton from '@/components/ui/AddButton';
+import { useLoadData } from '@/hooks/useLoadData';
 
-type TastingData = {
-  id: string;
-  name: string;
-};
 
 export default function TastingNote() {
-  const [tastings, setTastings] = useState<TastingData[]>([]);
   const router = useRouter();
+  const { data: tastings, setData: setTastings } = useLoadData({
+    storageKey: 'tastingNotes',
+    formatData: (item: any, index: number) => ({
+      id: index.toString(),
+      name: item.name,
+    }),
+  });
 
-  useEffect(() => {
-    const loadTastingData = async () => {
-      try {
-        const storedData = await AsyncStorage.getItem('tastingNotes');
-        if (storedData) {
-          const parsedData = JSON.parse(storedData);
-          const formattedData = parsedData.map((item: any, index: number) => ({
-            id: index.toString(),
-            name: item.name,
-            aroma: item.aroma,
-          }));
-          setTastings(formattedData);
-        }
-      } catch (error) {
-        Alert.alert('エラー', 'テイスティングノートの読込中にエラーが発生しました。');
-        console.error(error);
-      }
-    };
-    loadTastingData();
-  }, []);
-
-  const handleDelete = (id: string) => {
-    Alert.alert('確認', 'このノートを削除しますか？', [
-      { text: 'キャンセル', style: 'cancel' },
-      {
-        text: '削除',
-        style: 'destructive',
-        onPress: async () => {
-          try {
-            const updated = tastings.filter((note) => note.id !== id);
-            const reindexed = updated.map((note, index) => ({
-              ...note,
-              id: index.toString(),
-            }));
-            setTastings(reindexed);
-
-            const storedData = await AsyncStorage.getItem('tastingNotes');
-            if (storedData) {
-              const parsedData = JSON.parse(storedData).filter(
-                (_: any, index: number) => index.toString() !== id
-              );
-              const reindexedStored = parsedData.map((note: any, index: number) => ({
-                ...note,
-                id: index.toString(),
-              }));
-              await AsyncStorage.setItem('tastingNotes', JSON.stringify(reindexedStored));
-            }
-          } catch (error) {
-            Alert.alert('エラー', '削除中にエラーが発生しました。');
-            console.error(error);
-          }
-        },
-      },
-    ]);
+const handleDelete = async (id: string) => {
+    await handleDeleteConfirmation(
+      id,
+      tastings,
+      'このレシピを削除しますか？',
+      'tastingNotes',
+      setTastings as any
+    );
   };
+
 
   return (
     <SafeAreaView style={styles.container}>
-      <FlatList
+      <ItemList
         data={tastings}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <View style={styles.card}>
-            <View style={styles.textArea}>
-              <Text style={styles.cardText}>{item.name}</Text>
-            </View>
-            <TouchableOpacity
-              style={styles.detailButton}
-              onPress={() =>
-                router.push({
-                  pathname: '/tasting/detailTasting/DetailTasting',
-                  params: { id: item.id },
-                })
-              }
-            >
-              <Text style={styles.detailButtonText}>詳細</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.deleteButton}
-              onPress={() => handleDelete(item.id)}
-            >
-              <Text style={styles.deleteButtonText}>削除</Text>
-            </TouchableOpacity>
-          </View>
-        )}
+        onDelete={handleDelete}
+        detailPath="/tasting/detailTasting/DetailTasting"
       />
-      <Link href="/(tabs)/(note)/tasting/add/NewTasting" style={styles.button}>
-        <Text style={styles.buttonText}>ノートの追加</Text>
-      </Link>
+      <AddButton
+        title="ノートの追加"
+        onPress={() => {
+          router.push('/(tabs)/(note)/tasting/add/NewTasting');
+        }}
+      />
     </SafeAreaView>
   );
 }

@@ -176,8 +176,8 @@ export default function Timer() {
 
 const styles = StyleSheet.create({
   container: {
+    paddingTop: 50,
     flex: 1,
-    marginTop: 50,
     alignItems: "center",
     backgroundColor: "#fff",
   },

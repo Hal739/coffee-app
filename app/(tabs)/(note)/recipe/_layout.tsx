@@ -35,7 +35,7 @@ export default function Layout() {
         }}
       />
       <Stack.Screen
-        name="detail/Detail"
+        name="detail/DetailRecipe"
         options={({ route }) => {
           const { id }  = (route.params as { id: string }) || {};
           return {

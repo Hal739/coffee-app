@@ -22,7 +22,7 @@ export default function Layout() {
       <Stack.Screen
         name="add/NewBean"
         options={{
-            title: '豆の追加',
+            title: '管理情報の追加',
             presentation: 'modal',
           
         }}
@@ -32,7 +32,7 @@ export default function Layout() {
         options={({ route }) => {
           const { id }  = (route.params as { id: string }) || {};
           return {
-            title: 'レシピの詳細',
+            title: '管理情報の詳細',
             presentation: 'modal',
             headerRight: () => (
               <TouchableOpacity

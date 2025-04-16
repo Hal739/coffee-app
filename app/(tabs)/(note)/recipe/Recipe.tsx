@@ -1,146 +1,45 @@
-import {
-  StyleSheet,
-  View,
-  Text,
-  SafeAreaView,
-  Alert,
-  TouchableOpacity,
-} from "react-native";
-import { FlatList } from "react-native";
+import { StyleSheet, SafeAreaView, Alert} from "react-native";
 import React, { useState, useEffect } from "react";
-import { Link, useRouter } from "expo-router";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useRouter } from "expo-router";
+import ItemList from "@/components/ui/ItemList";
+import { handleDeleteConfirmation } from '@/utils/deleteUtils';
+import AddButton from "@/components/ui/AddButton";
+import { useLoadData } from "@/hooks/useLoadData";
 
 const Recipe = () => {
-  const [recipes, setRecipes] = useState<{ id: string; name: string }[]>([]);
   const router = useRouter();
 
-  useEffect(() => {
-    const loadRecipes = async () => {
-      try {
-        const storedRecipes = await AsyncStorage.getItem("recipes");
-        console.log("保存されているJSON:", storedRecipes); // JSONデータをコンソールに出力
-
-        if (storedRecipes) {
-          const parsedRecipes = JSON.parse(storedRecipes);
-          const formattedRecipes = parsedRecipes.map(
-            (recipe: any, index: number) => ({
-              id: index.toString(),
-              name: recipe.recipeName,
-            })
-          );
-          setRecipes(formattedRecipes);
-        }
-      } catch (error) {
-        Alert.alert("エラー", "レシピの読み込み中にエラーが発生しました。");
-        console.error("読み込みエラー:", error);
-      }
-    };
-
-    loadRecipes();
-  }, []);
+  const { data: recipes, setData: setRecipes } = useLoadData({
+    storageKey: 'recipes',
+    formatData: (recipe: any, index: number) => ({
+      id: index.toString(),
+      name: recipe.recipeName,
+    }),
+  });
 
   const handleDelete = async (id: string) => {
-    Alert.alert(
-      "確認",
-      "このレシピを削除しますか？",
-      [
-        {
-          text: "キャンセル",
-          style: "cancel",
-        },
-        {
-          text: "削除",
-          style: "destructive",
-          onPress: async () => {
-            try {
-              // ローカル状態を更新
-              const updatedRecipes = recipes.filter(
-                (recipe) => recipe.id !== id
-              );
-
-              // idを再割り当て
-              const reindexedRecipes = updatedRecipes.map((recipe, index) => ({
-                ...recipe,
-                id: index.toString(),
-              }));
-              setRecipes(reindexedRecipes);
-
-              // AsyncStorageを更新
-              const storedRecipes = await AsyncStorage.getItem("recipes");
-              if (storedRecipes) {
-                const parsedRecipes = JSON.parse(storedRecipes);
-                const filteredRecipes = parsedRecipes.filter(
-                  (_: any, index: number) => index.toString() !== id
-                );
-
-                // idを再割り当てして保存
-                const reindexedStoredRecipes = filteredRecipes.map(
-                  (recipe: any, index: number) => ({
-                    ...recipe,
-                    id: index.toString(),
-                  })
-                );
-                await AsyncStorage.setItem(
-                  "recipes",
-                  JSON.stringify(reindexedStoredRecipes)
-                );
-                console.log(
-                  "更新後のJSON:",
-                  JSON.stringify(reindexedStoredRecipes)
-                ); // 更新後のJSONを確認
-              }
-            } catch (error) {
-              Alert.alert("エラー", "レシピの削除中にエラーが発生しました。");
-              console.error("削除エラー:", error);
-            }
-          },
-        },
-      ],
-      { cancelable: true }
+    await handleDeleteConfirmation(
+      id,
+      recipes,
+      'このレシピを削除しますか？',
+      'recipes',
+      setRecipes as any
     );
   };
 
   return (
     <SafeAreaView style={styles.container}>
-      <FlatList
+      <ItemList
         data={recipes}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <View style={styles.card}>
-            <View
-              style={styles.textArea}
-            >
-              <Text style={styles.cardText}>{item.name}</Text>
-            </View>
-            <TouchableOpacity
-              style={styles.detailButton}
-              onPress={() =>
-                router.push({
-                  pathname: "/recipe/detail/Detail",
-                  params: {
-                    id: item.id,
-                  },
-                })
-              }
-            >
-              <Text style={styles.detailButtonText}>詳細</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.deleteButton}
-              onPress={() => handleDelete(item.id)}
-            >
-              <Text style={styles.deleteButtonText}>削除</Text>
-            </TouchableOpacity>
-          </View>
-        )}
+        onDelete={handleDelete}
+        detailPath="/recipe/detail/DetailRecipe"
       />
-      <Link
-        href="/(tabs)/(note)/recipe/editor/EditorDetail"
-        style={styles.button}
-      >
-        <Text style={styles.buttonText}>レシピの追加</Text>
-      </Link>
+      <AddButton
+        title="レシピの追加"
+        onPress={() => {
+          router.push('/(tabs)/(note)/recipe/editor/EditorDetail');
+        }}
+      />
     </SafeAreaView>
   );
 };

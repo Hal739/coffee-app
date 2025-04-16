@@ -1,38 +1,31 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { StyleSheet, View, Text, ScrollView, Alert, SafeAreaView } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import InfoText from '@/components/ui/InfoText';
 import RadarChart from '@/components/ui/RadarChart'; // RadarChartコンポーネントをインポート
+import { useLoadData } from '@/hooks/useLoadData';
 
 const DetailTasting = () => {
     const { id } = useLocalSearchParams(); // URLパラメータからidを取得
-    const [tasting, setTasting] = useState<any>(null);
-    
-    useEffect(() => {
-        const loadTasting = async () => {
-            try {
-                const storedTastings = await AsyncStorage.getItem('tastingNotes');
-                if (storedTastings) {
-                    const tastings = JSON.parse(storedTastings);
-                    const selectedTasting = tastings.find((t: any) => t.id === id);
-                    
-                    if (selectedTasting) {
-                        setTasting(selectedTasting);
-                    } else {
-                        Alert.alert('エラー', '指定されたテイスティングノートが見つかりません。');
-                    }
-                }
-            } catch (error) {
-                console.error('データ読み込みエラー:', error);
-                Alert.alert('エラー', 'データの読み込み中にエラーが発生しました。');
-            }
-        };
 
-        if (id) {
-            loadTasting();
-        }
-    }, [id]);
+    // useLoadDataを使用してデータをロード
+    const { data: tastings } = useLoadData({
+        storageKey: 'tastingNotes',
+        formatData: (item: any, index: number) => ({
+            id: index.toString(),
+            name: item.name,
+            aroma: item.aroma,
+            acidity: item.acidity,
+            sweetness: item.sweetness,
+            bitterness: item.bitterness,
+            body: item.body,
+            favorite: item.favorite,
+            notes: item.notes,
+        }),
+    });
+
+    // 指定されたIDのテイスティングノートを取得
+    const tasting = tastings.find((t: any) => t.id === id);
 
     if (!tasting) {
         return (
@@ -71,18 +64,16 @@ const DetailTasting = () => {
                     <InfoText title="苦味" value={tasting.bitterness} />
                     <InfoText title="ボディ" value={tasting.body} />
                     <InfoText title="お気に入り" value={tasting.favorite} />
-                    <InfoText title="ノート" value={tasting.notes} />
+                    <InfoText title="メモ" value={tasting.notes} />
                 </View>
                 <View style={styles.infoSection}>
                     <Text style={styles.chartTitle}>レーダーチャート</Text>
-                    <RadarChart data={chartData}/>
+                    <RadarChart data={chartData} />
                 </View>
             </ScrollView>
-            
         </SafeAreaView>
     );
 };
-
 
 const styles = StyleSheet.create({
     container: {
@@ -118,8 +109,8 @@ const styles = StyleSheet.create({
         marginBottom: 16,
     },
     chartTitle: {
-        textAlign: "center",
-        fontWeight: "bold",
+        textAlign: 'center',
+        fontWeight: 'bold',
         fontSize: 18,
     },
     loadingText: {
@@ -127,7 +118,6 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         marginTop: 20,
     },
-    
 });
 
 export default DetailTasting;
