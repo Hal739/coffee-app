@@ -12,8 +12,6 @@
   - 抽出手順に基づいたカウントダウンタイマー。
   - 各手順の時間と湯量を表示。
 
-- **ライセンス情報**
-  - アプリで使用しているライブラリのライセンスを表示。
 
 ---
 
@@ -78,8 +76,6 @@ Note & Timer App for drip coffee
   - Countdown timer based on brewing steps.
   - Display time and water amount for each step.
 
-- **License Information**
-  - View licenses of the libraries used in the app.
 
 ## Technologies Used
 
