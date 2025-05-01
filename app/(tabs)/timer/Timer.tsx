@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useRouter, useLocalSearchParams } from "expo-router";
+import { useFocusEffect } from '@react-navigation/native';
 import { SafeAreaView } from "react-native-safe-area-context";
 import {View,Text,TouchableOpacity,StyleSheet,Alert,FlatList,} from "react-native";
 import { CountdownCircleTimer } from "react-native-countdown-circle-timer";
@@ -24,10 +24,13 @@ export default function Timer() {
   );
   const [selectedRecipe, setSelectedRecipe] = useState<string | null>(null);
 
-  useEffect(() => {
-    // 初期表示時にレシピを読み込む
-    loadRecipes();
-  }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      loadRecipes(); // レシピを読み込む
+      return () => {
+      };
+    }, [])
+  );
 
   // レシピデータを取得する関数
   const loadRecipes = async () => {
@@ -167,7 +170,7 @@ export default function Timer() {
       >
           {isPlaying ? 
              <Ionicons name="pause" size={24} color="white" /> 
-            :<Ionicons name="play" size={24} color="white" />
+            :<Ionicons name="play" size={24}  color="white" style={{ marginLeft: 4 }}/>
           }
       </TouchableOpacity>
     </SafeAreaView>

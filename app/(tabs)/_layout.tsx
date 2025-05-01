@@ -1,21 +1,22 @@
-import { Tabs, useRouter ,Stack} from "expo-router";
-import { StyleSheet, TouchableOpacity, Text } from "react-native";
+import { Tabs, useRouter } from "expo-router";
+import { StyleSheet, TouchableOpacity } from "react-native";
 import Entypo from '@expo/vector-icons/Entypo';
 import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
-export default () => {
+export default function appLayout() {
     const router = useRouter();
     return (
+
         <Tabs
             screenOptions={{
-                headerTitleAlign: "center", // タイトルを中央揃え
+                headerTitleAlign: "center", 
                 headerStyle: {
-                    backgroundColor: "#f8f8f8", // ヘッダーの背景色を統一
+                    backgroundColor: "#f8f8f8", 
                 },
                 headerTitleStyle: {
-                    fontSize: 16, // タイトルのフォントサイズを統一
-                    fontWeight: "bold", // タイトルのフォントウェイトを統一
+                    fontSize: 16, 
+                    fontWeight: "bold", 
                 },
                 headerRight: () => (
                     <TouchableOpacity

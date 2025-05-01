@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Text, ScrollView, TouchableOpacity, Alert, TextInput } from 'react-native';
+import { StyleSheet, Text, ScrollView, TouchableOpacity, Alert, TextInput } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
 import CalendarModal from '@/components/ui/CalendarModal';
@@ -111,7 +111,10 @@ const AddBean = () => {
                     
                 ]}
                 placeholder={{ label: '選択してください', value: '' }}
-                style={pickerSelectStyles}
+                style={{
+                    inputIOS: pickerSelectStyles.inputIOS,
+                    inputAndroid: pickerSelectStyles.inputAndroid,
+                  }}
             />
 
             <Text style={styles.label}>精製方法</Text>

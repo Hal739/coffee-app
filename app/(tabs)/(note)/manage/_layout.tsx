@@ -1,8 +1,8 @@
 import { useRouter, Stack } from 'expo-router';
-import { StyleSheet, TouchableOpacity, Text } from 'react-native';
+import { StyleSheet, TouchableOpacity } from 'react-native';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 
-export default function Layout() {
+export default function manageLayout() {
   const router = useRouter();
   return (
     <Stack
@@ -24,7 +24,6 @@ export default function Layout() {
         options={{
             title: '管理情報の追加',
             presentation: 'modal',
-          
         }}
       />
       <Stack.Screen
@@ -39,7 +38,7 @@ export default function Layout() {
                 onPressIn={() => {
                   console
                   router.push({
-                    pathname: '/manage/detailManage/EditorDetailBean',
+                    pathname: '../detailManage/EditorDetailBean',
                     params: {
                       id: id,
                     },

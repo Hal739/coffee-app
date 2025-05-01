@@ -1,9 +1,9 @@
 import { useRouter, Stack } from 'expo-router';
-import { StyleSheet, TouchableOpacity, Text } from 'react-native';
+import { StyleSheet, TouchableOpacity } from 'react-native';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 
 
-export default function Layout() {
+export default function tastingLayout() {
   const router = useRouter();
   return (
     <Stack
@@ -40,7 +40,7 @@ export default function Layout() {
                       onPressIn={() => {
                         console
                         router.push({
-                          pathname: '/tasting/detailTasting/EditorDetailTasting',
+                          pathname: '../detailTasting/EditorDetailTasting',
                           params: {
                             id: id,
                           },

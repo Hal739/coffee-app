@@ -1,7 +1,6 @@
-import { useRouter, Stack } from 'expo-router';
+import { Stack} from 'expo-router';
 
 export default function Layout() {
-  const router = useRouter();
   return (
     <Stack
       screenOptions={{
@@ -14,7 +13,7 @@ export default function Layout() {
       <Stack.Screen
         name="Timer"
         options={{
-          headerShown: false, // ヘッダーを非表示にする
+          headerShown: false, 
           presentation: 'modal',
         }}
       />

@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, SafeAreaView, Alert, Text } from 'react-native';
+import React from 'react';
+import { StyleSheet, SafeAreaView } from 'react-native';
 import { useRouter } from 'expo-router';
 import ItemList from '@/components/ui/ItemList'; 
 import { handleDeleteConfirmation } from '@/utils/deleteUtils';

@@ -13,19 +13,36 @@ import version from "@/package.json";
 
 const Settings = () => {
   const router = useRouter();
+  const contactUrl = "https://docs.google.com/forms/d/e/1FAIpQLSc-gSdjDQ_mGZR-SInl5hBZPVucd_Hc2_es7S0cDVYSvnyyhQ/viewform?usp=dialog";
 
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <Text style={styles.sectionTitle}>アプリ情報</Text>
+
         <TouchableOpacity onPress={() => router.push("./licenses/Licenses")} style={styles.sectionContainer}>
             <Text style={styles.sectionItem}>ライセンス</Text>
             <AntDesign name="right" size={16} color="black" />
         </TouchableOpacity>
+
+        <TouchableOpacity onPress={() => router.push("./privacyPolicy/PrivacyPolicy")} style={styles.sectionContainer}>
+            <Text style={styles.sectionItem}>プライバシーポリシー</Text>
+            <AntDesign name="right" size={16} color="black" />
+        </TouchableOpacity>
+        
+        <TouchableOpacity onPress={() => router.push(contactUrl)} style={styles.sectionContainer}>
+            <Text style={styles.sectionItem}>お問い合わせ</Text>
+            <AntDesign name="right" size={16} color="black" />
+        </TouchableOpacity>
+
         <View style={styles.sectionContainer}>
           <Text style={styles.sectionItem}>バージョン</Text>
           <Text >{version.version}</Text>
         </View>
+
+          
+
+        
       </ScrollView>
     </SafeAreaView>
   );

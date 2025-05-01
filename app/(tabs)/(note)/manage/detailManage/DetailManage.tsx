@@ -35,7 +35,7 @@ const DetailBean = () => {
     }
 
     return (
-        <SafeAreaView>
+        <ScrollView>
             <View style={styles.header}>
                 <Text style={styles.detailTextTitle}>{bean.name}</Text>
             </View>
@@ -48,7 +48,7 @@ const DetailBean = () => {
                 <InfoText title="精製方法" value={bean.processing} />
                 <InfoText title="メモ" value={bean.notes} />
             </ScrollView>
-        </SafeAreaView>
+        </ScrollView>
     );
 };
 
@@ -62,6 +62,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#007BFF',
         paddingVertical: 8,
         marginBottom: 16,
+
     },
     detailTextTitle: {
         fontSize: 24,
