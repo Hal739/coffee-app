@@ -8,13 +8,15 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
  * @param confirmationMessage 確認ダイアログのメッセージ
  * @param storageKey AsyncStorageのキー
  * @param setItems 状態を更新するための関数
+ * @param onCancel キャンセル時に呼ばれるコールバック（省略可）
  */
 export const handleDeleteConfirmation = async (
   id: string,
   items: { id: string }[],
   confirmationMessage: string,
   storageKey: string,
-  setItems: React.Dispatch<React.SetStateAction<{ id: string }[]>>
+  setItems: React.Dispatch<React.SetStateAction<{ id: string }[]>>,
+  onDelete?: () => void
 ) => {
   return new Promise<void>((resolve) => {
     if (Platform.OS === 'web') {
@@ -30,12 +32,19 @@ export const handleDeleteConfirmation = async (
         '確認',
         confirmationMessage,
         [
-          { text: 'キャンセル', style: 'cancel', onPress: () => resolve() },
+          {
+            text: 'キャンセル',
+            style: 'cancel',
+            onPress: () => {
+              resolve();
+            },
+          },
           {
             text: '削除',
             style: 'destructive',
             onPress: async () => {
               await performDelete(id, items, storageKey, setItems);
+              onDelete?.();
               resolve();
             },
           },
@@ -50,9 +59,6 @@ export const handleDeleteConfirmation = async (
   });
 };
 
-/**
- * 実際の削除処理
- */
 const performDelete = async (
   id: string,
   items: { id: string }[],
@@ -60,7 +66,7 @@ const performDelete = async (
   setItems: React.Dispatch<React.SetStateAction<{ id: string }[]>>
 ) => {
   try {
-    // ローカル状態を更新
+    
     const updatedItems = items.filter((item) => item.id !== id);
     const reindexedItems = updatedItems.map((item, index) => ({
       ...item,
@@ -68,7 +74,7 @@ const performDelete = async (
     }));
     setItems(reindexedItems);
 
-    // AsyncStorageを更新
+    
     const storedData = await AsyncStorage.getItem(storageKey);
     if (storedData) {
       const parsedData = JSON.parse(storedData).filter(
