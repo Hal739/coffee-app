@@ -1,4 +1,4 @@
-# Coffee Note App
+# 珈琲手帳
 
 ドリップコーヒーのためのノート＆タイマーアプリ
 
@@ -36,33 +36,8 @@
 
 ---
 
-## セットアップ手順
 
-1. **リポジトリをクローン**
-   ```bash
-   git clone https://github.com/Hal739/coffee-app.git
-   cd coffee-app
-   ```
-
-2. **依存関係をインストール**
-   ```bash
-   npm install
-   ```
-
-3. **アプリを起動**
-   - Androidの場合:
-     ```bash
-     npm run android
-     ```
-   - iOSの場合:
-     ```bash
-     npm run ios
-     ```
-
----
-
-
-# Coffee Note App
+# BrewNote
 
 Note & Timer App for drip coffee
 
@@ -96,28 +71,11 @@ Note & Timer App for drip coffee
 - **Timer**
   - react-native-countdown-circle-timer
 
-## Setup Instructions
 
-1. **Clone the Repository**
-   ```bash
-   git clone https://github.com/Hal739/coffee-app.git
-   cd coffee-app
-2. **Install Dependencies**
-   ```bash
-   npm install
-   ```
-3. **Run the app**
-   - For android
-   ```bash
-   npm run android
-   ```
-   - For iOS
-   ```bash
-   npm run ios
-   ```
 <p>
-  
-<img src="https://github.com/user-attachments/assets/d6e2cd72-52d4-4a3b-988a-21a78d280847" width=33%>
-<img src="https://github.com/user-attachments/assets/d93e808c-3ce6-4016-99f3-8b3016c1f394" width=33%>
-<img src="https://github.com/user-attachments/assets/1360bf81-dc5c-4f5d-bae0-7077bd1369fc" width=33%>
+
+
+<img src="https://github.com/user-attachments/assets/f87587e2-c1df-491b-b6bc-26c153972878" width=33%>
+<img src="https://github.com/user-attachments/assets/df3afa70-20ff-4d91-8ccf-39030669fa83" width=33%>
+<img src="https://github.com/user-attachments/assets/da1d4237-436b-4eb4-a0c5-d0774840c9b9" width=33%>
 </p>
