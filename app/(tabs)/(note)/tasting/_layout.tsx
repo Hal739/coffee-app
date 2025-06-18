@@ -28,7 +28,7 @@ export default function tastingLayout() {
       screenOptions={{
         headerStyle: { backgroundColor: '#f8f8f8' },
         headerTintColor: '#333',
-        headerTitleStyle: { fontSize: 18 },
+        headerTitleStyle: { fontSize: 16 },
       }}
     >
       <Stack.Screen name="Tasting" options={{ headerShown: false }} />
