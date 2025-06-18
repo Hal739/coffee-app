@@ -37,5 +37,5 @@ yarn-error.*
 
 app-example
 
-*apk
+*.apk
 
